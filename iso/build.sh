@@ -14,6 +14,8 @@ verbose=""
 pacman_conf=${work_dir}/pacman.conf
 script_path=$(readlink -f ${0%/*})
 
+repo_dir=$(pwd | sed "s|iso|repo|g")
+
 _usage ()
 {
     echo "usage ${0} [options]"
@@ -44,11 +46,12 @@ run_once() {
     fi
 }
 
-# Setup custom pacman.conf with current cache directories.
+# Setup custom pacman.conf with current cache directories and local repository.
 make_pacman_conf() {
     local _cache_dirs
     _cache_dirs=($(pacman -v 2>&1 | grep '^Cache Dirs:' | sed 's/Cache Dirs:\s*//g'))
-    sed -r "s|^#?\\s*CacheDir.+|CacheDir = $(echo -n ${_cache_dirs[@]})|g" ${script_path}/pacman.conf > ${pacman_conf}
+    sed -r "s|^#?\\s*CacheDir.+|CacheDir = $(echo -n ${_cache_dirs[@]})|g;
+            s|%CUSTOM_REPO_DIR%|${repo_dir}|g" ${script_path}/pacman.conf > ${pacman_conf}
 }
 
 # Base installation, plus needed packages (airootfs)
