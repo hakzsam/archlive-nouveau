@@ -15,6 +15,7 @@ elinks
 ethtool
 f2fs-tools
 fsarchiver
+git
 gnu-netcat
 gpm
 gptfdisk
@@ -28,6 +29,7 @@ ipw2200-fw
 irssi
 lftp
 linux-atm
+mesa-demos
 mc
 mtools
 nfs-utils
@@ -52,11 +54,17 @@ sudo
 tcpdump
 testdisk
 usb_modeswitch
+vim
 vpnc
 wget
 wireless_tools
 wpa_actiond
 wvdial
+xf86-input-keyboard
+xf86-input-mouse
+xf86-input-synaptics
 xl2tpd
+xorg-server
+xorg-xinit
 zd1211-firmware
 zsh
