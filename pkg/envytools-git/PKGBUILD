@@ -2,7 +2,7 @@
 # Contributor: Timothée Ravier <tim@siosm.fr>
 
 pkgname=envytools-git
-pkgver=0.r3206.55ecfa5
+pkgver=0.r3868.686f072
 pkgrel=1
 epoch=1
 pkgdesc="A tool for nouveau debugging"

@@ -5,7 +5,7 @@
 
 pkgname=xf86-video-nouveau-git
 _basename=xf86-video-nouveau
-pkgver=1.0.9.3.g0364232
+pkgver=1.0.11.10.g3fb97d7
 pkgrel=1
 pkgdesc="nvidia opensource X driver"
 arch=(i686 x86_64)

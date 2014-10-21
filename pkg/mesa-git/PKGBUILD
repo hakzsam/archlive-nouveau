@@ -10,7 +10,7 @@
 
 pkgbase=mesa-git
 pkgname=('mesa-dri-git' 'mesa-git' 'mesa-libgl-git')
-pkgver=10.4.0_devel.65028
+pkgver=10.4.0_devel.66213
 pkgrel=1
 arch=('i686' 'x86_64')
 makedepends=('python2' 'libxml2' 'libx11' 'glproto' 'libdrm' 'dri2proto' 'dri3proto' 'presentproto' 
