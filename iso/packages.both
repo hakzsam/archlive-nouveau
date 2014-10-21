@@ -12,6 +12,7 @@ dnsmasq
 dnsutils
 dosfstools
 elinks
+envytools-git
 ethtool
 f2fs-tools
 fsarchiver
@@ -28,8 +29,13 @@ ipw2100-fw
 ipw2200-fw
 irssi
 lftp
+libdrm-git
+libpciaccess-git
 linux-atm
 mesa-demos
+mesa-dri-git
+mesa-git
+mesa-libgl-git
 mc
 mtools
 nfs-utils
@@ -54,6 +60,7 @@ sudo
 tcpdump
 testdisk
 usb_modeswitch
+valgrind-mmt-git
 vim
 vpnc
 wget
@@ -63,6 +70,7 @@ wvdial
 xf86-input-keyboard
 xf86-input-mouse
 xf86-input-synaptics
+xf86-video-nouveau-git
 xl2tpd
 xorg-server
 xorg-xinit
