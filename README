@@ -1,0 +1,18 @@
+Customised live version of Arch Linux with pre-installed packages for Nouveau
+
+!!! Currently only work for x86_64 architectures !!!
+
+Pre-installed kernels:
+1) Nouveau (git://people.freedesktop.org/~darktama/nouveau)
+2) Latest (git://git.kernel.org/pub/scm/linux/kernel/git/torvals/linux.git)
+3) LTS (Long-term support kernel from pacman)
+
+Pre-installed AUR packages:
+envytools-git
+libdrm-git
+libpciaccess-git
+mesa-dri-git
+mesa-git
+mesa-libgl-git
+valgrind-mmt-git
+xf86-video-nouveau-git
