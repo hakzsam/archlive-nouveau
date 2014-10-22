@@ -29,18 +29,6 @@ pkgbase = mesa-git
 	source = mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master
 	source = LICENSE
 
-pkgname = opencl-mesa-git
-	pkgdesc = OpenCL support for AMD/ATI Radeon Mesa drivers
-	depends = mesa-libgl
-	depends = mesa=
-	depends = libcl
-	depends = libclc
-	depends = clang
-	optdepends = opencl-headers: headers necessary for OpenCL development
-	provides = opencl-mesa
-	conflicts = opencl-mesa
-	replaces = opencl-mesa
-
 pkgname = mesa-dri-git
 	pkgdesc = Mesa DRI drivers for AMD, Intel, NVIDIA and VMWare
 	depends = mesa-libgl

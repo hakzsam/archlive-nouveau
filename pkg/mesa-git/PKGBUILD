@@ -9,7 +9,7 @@
 # Contributor: Diego Jose <diegoxter1006@gmail.com>
 
 pkgbase=mesa-git
-pkgname=('opencl-mesa-git' 'mesa-dri-git' 'mesa-git' 'mesa-libgl-git')
+pkgname=('mesa-dri-git' 'mesa-git' 'mesa-libgl-git')
 pkgver=10.4.0_devel.65028
 pkgrel=1
 arch=('i686' 'x86_64')
@@ -61,8 +61,6 @@ build () {
                --enable-xvmc \
                --enable-dri3 \
                --enable-omx \
-               --enable-opencl \
-               --enable-opencl-icd \
                --with-clang-libdir=/usr/lib
 
   make
@@ -70,27 +68,6 @@ build () {
   # fake installation
   mkdir -p "${srcdir}/fakeinstall"
   make DESTDIR="${srcdir}/fakeinstall" install
-}
-
-package_opencl-mesa-git () {
-  pkgdesc="OpenCL support for AMD/ATI Radeon Mesa drivers"
-  depends=('mesa-libgl' "mesa=$(_mesaver)" 'libcl' 'libclc' 'clang')
-  optdepends=('opencl-headers: headers necessary for OpenCL development')
-  provides=('opencl-mesa')
-  replaces=('opencl-mesa')
-  conflicts=('opencl-mesa')
-
-  install -v -m755 -d "${pkgdir}/etc"
-  mv -v "${srcdir}/fakeinstall/etc/OpenCL" "${pkgdir}/etc/"
- 
-  install -v -m755 -d "${pkgdir}/usr/lib"
-  mv -v "${srcdir}"/fakeinstall/usr/lib/lib*OpenCL* "${pkgdir}/usr/lib/"
-  mv -v "${srcdir}/fakeinstall/usr/lib/gallium-pipe" "${pkgdir}/usr/lib/"
-
-  install -v -m755 -d "${pkgdir}/usr/share/licenses/opencl-mesa"
-  install -v -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/opencl-mesa/"
-
-  ln -sv opencl-mesa "${pkgdir}/usr/share/licenses/${pkgname}"
 }
 
 package_mesa-dri-git() {
