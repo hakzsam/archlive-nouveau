@@ -16,6 +16,10 @@ script_path=$(readlink -f ${0%/*})
 
 repo_dir=$(pwd | sed "s|iso|repo|g")
 
+src_dir=../src
+linux_dir=${src_dir}/linux
+linux_version=$(cat ${linux_dir}/include/config/kernel.release)
+
 _usage ()
 {
     echo "usage ${0} [options]"
@@ -65,6 +69,14 @@ make_packages() {
     setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -p "$(grep -h -v ^# ${script_path}/packages.{both,${arch}})" install
 }
 
+# Copy mkinitcpio custom archiso hooks and build initramfs (airootfs)
+make_setup_mkinitcpio_custom()  {
+    # Linux latest kernel tree.
+    cp ${verbose} ${linux_dir}/arch/x86/boot/bzImage ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux-latest
+    cp -R ${verbose} ${src_dir}/lib/modules/${linux_version} ${work_dir}/${arch}/airootfs/lib/modules
+    setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'mkinitcpio -c /etc/mkinitcpio-archiso.conf -k /boot/vmlinuz-linux-latest -g /boot/initramfs-linux-latest.img' run
+}
+
 # Copy mkinitcpio archiso hooks and build initramfs (airootfs)
 make_setup_mkinitcpio() {
     local _hook
@@ -101,6 +113,13 @@ make_boot() {
 make_boot_extra() {
     cp ${work_dir}/${arch}/airootfs/boot/memtest86+/memtest.bin ${work_dir}/iso/${install_dir}/boot/memtest
     cp ${work_dir}/${arch}/airootfs/usr/share/licenses/common/GPL2/license.txt ${work_dir}/iso/${install_dir}/boot/memtest.COPYING
+}
+
+# Prepare latest kernel/initramfs ${install_dir}/boot/
+make_boot_custom() {
+    mkdir -p ${work_dir}/iso/${install_dir}/boot/${arch}
+    cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux-latest.img ${work_dir}/iso/${install_dir}/boot/${arch}/initramfs-linux-latest.img
+    cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux-latest ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz-linux-latest
 }
 
 # Prepare /${install_dir}/boot/syslinux
@@ -235,11 +254,13 @@ for arch in x86_64; do
     run_once make_basefs
     run_once make_packages
     run_once make_setup_mkinitcpio
+    run_once make_setup_mkinitcpio_custom
     run_once make_customize_airootfs
 done
 
 for arch in x86_64; do
     run_once make_boot
+    run_once make_boot_custom
 done
 
 # Do all stuff for "iso"
