@@ -75,6 +75,15 @@ make_setup_mkinitcpio_custom()  {
     cp ${verbose} ${linux_dir}/arch/x86/boot/bzImage ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux-latest
     cp -R ${verbose} ${src_dir}/lib/modules/${linux_version} ${work_dir}/${arch}/airootfs/lib/modules
     setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'mkinitcpio -c /etc/mkinitcpio-archiso.conf -k /boot/vmlinuz-linux-latest -g /boot/initramfs-linux-latest.img' run
+
+    # Nouveau latest kernel tree.
+    cp ${verbose} ${src_dir}/nouveau/drm/nouveau.ko ${work_dir}/${arch}/airootfs/lib/modules/${linux_version}/kernel/drivers/gpu/drm/nouveau/nouveau_latest.ko
+    cp ${script_path}/mkinitcpio-nouveau.conf ${work_dir}/${arch}/airootfs/etc/mkinitcpio-nouveau.conf
+    echo "#!/bin/bash" > ${work_dir}/${arch}/airootfs/root/depmod.sh
+    echo "depmod ${linux_version}" >> ${work_dir}/${arch}/airootfs/root/depmod.sh
+    setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'sh /root/depmod.sh' run
+    rm ${work_dir}/${arch}/airootfs/root/depmod.sh
+    setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'mkinitcpio -c /etc/mkinitcpio-nouveau.conf -k /boot/vmlinuz-linux-latest -g /boot/initramfs-linux-nouveau.img' run
 }
 
 # Copy mkinitcpio archiso hooks and build initramfs (airootfs)
@@ -119,6 +128,7 @@ make_boot_extra() {
 make_boot_custom() {
     mkdir -p ${work_dir}/iso/${install_dir}/boot/${arch}
     cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux-latest.img ${work_dir}/iso/${install_dir}/boot/${arch}/initramfs-linux-latest.img
+    cp ${work_dir}/${arch}/airootfs/boot/initramfs-linux-nouveau.img ${work_dir}/iso/${install_dir}/boot/${arch}/initramfs-linux-nouveau.img
     cp ${work_dir}/${arch}/airootfs/boot/vmlinuz-linux-latest ${work_dir}/iso/${install_dir}/boot/${arch}/vmlinuz-linux-latest
 }
 
