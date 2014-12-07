@@ -33,13 +33,13 @@ if [ $? != 0 ]; then
 fi
 
 # Build Nouveau DRM kernel module.
-if [ ! -d ${nouveau_dir} ]; then
-    git clone ${nouveau_git} ${nouveau_dir} --depth 1
-else
-    cd ${nouveau_dir} && git fetch origin && git rebase origin && cd -
+if [ -d ${nouveau_dir} ]; then
+    rm -rf ${nouveau_dir}
 fi
-if [ $? != 0 ]; then
-    echo "Failed to update 'nouveau' repository!"
+
+git clone ${nouveau_git} ${nouveau_dir} --depth 1
+if [ $? -ne 0 ]; then
+    echo "Failed to clone 'nouveau' repository!"
     exit 1
 fi
 
