@@ -1,5 +1,9 @@
 #!/bin/bash
 
+archs=${1}
+
+i686chroot="$PWD/../"
+
 pkgs=('libpciaccess-git'
       'libdrm-git'
       'xf86-video-nouveau-git'
@@ -8,15 +12,24 @@ pkgs=('libpciaccess-git'
       'valgrind-mmt-git')
 
 asroot=""
-if [ ${EUID} == 0 ]; then
-    asroot="--asroot"
+if [ ${EUID} -eq 0 ]; then
+	asroot="--asroot"
 fi
 
-for pkg in "${pkgs[@]}"
+for arch in "${archs[@]}"
 do
-	cd $pkg && makepkg ${asroot} -f && cd ..
-	if [ $? != 0 ]; then
-		echo "Failed to build '$pkg'!"
-		exit 1
+	if [ ${arch} == x86_64 ]; then
+		cmd="makepkg ${asroot} -f"
+	elif [ ${arch} == i686 ]; then
+		cmd="extra-i686-build -r ${i686chroot}"
 	fi
+
+	for pkg in "${pkgs[@]}"
+	do
+		cd $pkg && ${cmd} && cd ..
+		if [ $? -ne 0 ]; then
+			echo "Failed to build '$pkg' for '$arch'!"
+			exit 1
+		fi
+	done
 done

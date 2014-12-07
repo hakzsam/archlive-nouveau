@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 set -e -u
 
 iso_name=archlinux
@@ -19,6 +20,8 @@ repo_dir=$(pwd | sed "s|iso|repo|g")
 src_dir=../src
 linux_dir=${src_dir}/linux
 linux_version=$(cat ${linux_dir}/include/config/kernel.release)
+
+archs=${2}
 
 _usage ()
 {
@@ -260,7 +263,7 @@ mkdir -p ${work_dir}
 run_once make_pacman_conf
 
 # Do all stuff for each airootfs
-for arch in x86_64; do
+for arch in "${archs[@]}"; do
     run_once make_basefs
     run_once make_packages
     run_once make_setup_mkinitcpio
@@ -268,7 +271,7 @@ for arch in x86_64; do
     run_once make_customize_airootfs
 done
 
-for arch in x86_64; do
+for arch in "${archs[@]}"; do
     run_once make_boot
     run_once make_boot_custom
 done
@@ -280,7 +283,7 @@ run_once make_isolinux
 run_once make_efi
 run_once make_efiboot
 
-for arch in x86_64; do
+for arch in "${archs[@]}"; do
     run_once make_prepare
 done
 
