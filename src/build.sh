@@ -1,7 +1,8 @@
 #!/bin/bash
 
-linux_git=git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+linux_git=git://people.freedesktop.org/~airlied/linux
 linux_dir=linux
+linux_branch=drm-next
 install_mod_path=../
 
 nouveau_git=git://people.freedesktop.org/~darktama/nouveau
@@ -9,9 +10,9 @@ nouveau_dir=nouveau
 
 # Build the latest Linux kernel.
 if [ ! -d ${linux_dir} ]; then
-    git clone ${linux_git} ${linux_dir} --depth 1
+    git clone ${linux_git} ${linux_dir} --depth 1 --branch ${linux_branch}
 else
-    cd ${linux_dir} && git fetch origin && git rebase origin && cd -
+    cd ${linux_dir} && git pull origin ${linux_branch} && cd -
 fi
 if [ $? != 0 ]; then
     echo "Failed to update 'linux' repository!"
