@@ -14,20 +14,20 @@ if [ ! -d ${linux_dir} ]; then
 else
     cd ${linux_dir} && git pull origin ${linux_branch} && cd -
 fi
-if [ $? != 0 ]; then
+if [ $? -ne 0 ]; then
     echo "Failed to update 'linux' repository!"
     exit 1
 fi
 
 cd ${linux_dir}
 zcat /proc/config.gz > .config && make olddefconfig
-if [ $? != 0 ]; then
+if [ $? -ne 0 ]; then
     echo "Failed to build old default config!"
     exit 1
 fi
 
 make && make modules_install INSTALL_MOD_PATH=${install_mod_path} && cd -
-if [ $? != 0 ]; then
+if [ $? -ne 0 ]; then
     echo "Failed to build the kernel!"
     exit 1
 fi
@@ -48,7 +48,7 @@ linuxdir=$(echo "$PWD/lib/modules/${linux_version}/source")
 
 cd ${nouveau_dir}
 ./autogen.sh && make && cd drm && make LINUXDIR=${linuxdir} && cd -
-if [ $? != 0 ]; then
+if [ $? -ne 0 ]; then
     echo "Failed to build 'nouveau'!"
     exit 1
 fi
