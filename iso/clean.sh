@@ -1,5 +1,5 @@
 #!/bin/bash
 
 if [ -d "work" ]; then
-	rm -v work/build.make_*
+	rm -rvf work
 fi
