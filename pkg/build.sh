@@ -6,6 +6,8 @@ i686chroot="$PWD/../"
 
 pkgs=('libpciaccess-git'
       'libdrm-git'
+      'xf86-video-ati-git'
+      'xf86-video-intel-git'
       'xf86-video-nouveau-git'
       'mesa-git'
       'envytools-git'
