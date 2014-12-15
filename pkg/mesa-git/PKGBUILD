@@ -39,8 +39,8 @@ build () {
   ./autogen.sh --prefix=/usr \
                --sysconfdir=/etc \
                --with-dri-driverdir=/usr/lib/xorg/modules/dri \
-               --with-gallium-drivers=nouveau \
-               --with-dri-drivers=nouveau \
+               --with-gallium-drivers=r300,r600,radeonsi,nouveau,svga,swrast \
+               --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
                --with-egl-platforms=x11,drm,wayland \
                --enable-llvm-shared-libs \
                --disable-gallium-egl \
@@ -73,9 +73,9 @@ build () {
 package_mesa-dri-git() {
   pkgdesc="Mesa DRI drivers for AMD, Intel, NVIDIA and VMWare"
   depends=('mesa-libgl' "mesa=$(_mesaver)" 'libomxil-bellagio' 'libvdpau' 'libxvmc' 'libtxc_dxtn')
-  provides=('nouveau-dri' 'mesa-dri' 'nouveau-dri-git')
-  replaces=('nouveau-dri' 'mesa-dri' 'nouveau-dri-git')
-  conflicts=('nouveau-dri' 'mesa-dri' 'nouveau-dri-git')
+  provides=('ati-dri' 'intel-dri' 'nouveau-dri' 'svga-dri' 'mesa-dri' 'ati-dri-git' 'intel-dri-git' 'nouveau-dri-git' 'svga-dri-git')
+  replaces=('ati-dri' 'intel-dri' 'nouveau-dri' 'svga-dri' 'mesa-dri' 'ati-dri-git' 'intel-dri-git' 'nouveau-dri-git' 'svga-dri-git')
+  conflicts=('ati-dri' 'intel-dri' 'nouveau-dri' 'svga-dri' 'mesa-dri' 'ati-dri-git' 'intel-dri-git' 'nouveau-dri-git' 'svga-dri-git')
 
   install -v -m755 -d "${pkgdir}/etc"
   mv -v "${srcdir}/fakeinstall/etc/drirc" "${pkgdir}/etc/"
@@ -85,10 +85,16 @@ package_mesa-dri-git() {
   mv -v "${srcdir}/fakeinstall/usr/lib/bellagio" "${pkgdir}/usr/lib/"
   mv -v "${srcdir}/fakeinstall/usr/lib/vdpau" "${pkgdir}/usr/lib/"
 
-  mv -v "${srcdir}"/fakeinstall/usr/lib/libXvMCnouveau.so* "${pkgdir}/usr/lib/"
+  mv -v "${srcdir}"/fakeinstall/usr/lib/libXvMC{nouveau,r600}.so* "${pkgdir}/usr/lib/"
 
+  # ati-dri
+  mv -v "${srcdir}"/fakeinstall/usr/lib/xorg/modules/dri/{r200,r300,r600,radeon,radeonsi}_dri.so "${pkgdir}/usr/lib/xorg/modules/dri/"
+  # intel-dri
+  mv -v "${srcdir}/fakeinstall/usr/lib/xorg/modules/dri"/{i915,i965}_dri.so "${pkgdir}/usr/lib/xorg/modules/dri/"
   # nouveau-dri
   mv -v "${srcdir}/fakeinstall/usr/lib/xorg/modules/dri"/nouveau_{dri,vieux_dri}.so "${pkgdir}/usr/lib/xorg/modules/dri/"
+  # svga-dri
+  mv -v "${srcdir}/fakeinstall/usr/lib/xorg/modules/dri/vmwgfx_dri.so" "${pkgdir}/usr/lib/xorg/modules/dri/"
 
   install -v -m755 -d "${pkgdir}/usr/share/licenses/mesa-dri"
   install -v -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/mesa-dri/"
