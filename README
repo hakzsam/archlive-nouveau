@@ -16,4 +16,5 @@ mesa-git
 mesa-libgl-git
 valgrind-mmt-git
 xf86-video-ati-git
+xf86-video-intel-git
 xf86-video-nouveau-git

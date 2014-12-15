@@ -71,6 +71,7 @@ xf86-input-keyboard
 xf86-input-mouse
 xf86-input-synaptics
 xf86-video-ati-git
+xf86-video-intel-git
 xf86-video-nouveau-git
 xl2tpd
 xorg-server
