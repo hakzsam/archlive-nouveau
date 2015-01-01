@@ -175,7 +175,13 @@ make_efi() {
 
     sed "s|%ARCHISO_LABEL%|${iso_label}|g;
          s|%INSTALL_DIR%|${install_dir}|g" \
-        ${script_path}/efiboot/loader/entries/archiso-x86_64-usb.conf > ${work_dir}/iso/loader/entries/archiso-x86_64.conf
+        ${script_path}/efiboot/loader/entries/archiso-x86_64-lts-usb.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-lts.conf
+    sed "s|%ARCHISO_LABEL%|${iso_label}|g;
+         s|%INSTALL_DIR%|${install_dir}|g" \
+        ${script_path}/efiboot/loader/entries/archiso-x86_64-latest-usb.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-latest.conf
+    sed "s|%ARCHISO_LABEL%|${iso_label}|g;
+         s|%INSTALL_DIR%|${install_dir}|g" \
+        ${script_path}/efiboot/loader/entries/archiso-x86_64-nouveau-usb.conf > ${work_dir}/iso/loader/entries/archiso-x86_64-nouveau.conf
 
     # EFI Shell 2.0 for UEFI 2.3+ ( http://sourceforge.net/apps/mediawiki/tianocore/index.php?title=UEFI_Shell )
     curl -o ${work_dir}/iso/EFI/shellx64_v2.efi https://svn.code.sf.net/p/edk2/code/trunk/edk2/ShellBinPkg/UefiShell/X64/Shell.efi
@@ -186,7 +192,7 @@ make_efi() {
 # Prepare efiboot.img::/EFI for "El Torito" EFI boot mode
 make_efiboot() {
     mkdir -p ${work_dir}/iso/EFI/archiso
-    truncate -s 31M ${work_dir}/iso/EFI/archiso/efiboot.img
+    truncate -s 93M ${work_dir}/iso/EFI/archiso/efiboot.img
     mkfs.vfat -n ARCHISO_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
 
     mkdir -p ${work_dir}/efiboot
@@ -194,7 +200,10 @@ make_efiboot() {
 
     mkdir -p ${work_dir}/efiboot/EFI/archiso
     cp ${work_dir}/iso/${install_dir}/boot/x86_64/vmlinuz ${work_dir}/efiboot/EFI/archiso/vmlinuz.efi
+    cp ${work_dir}/iso/${install_dir}/boot/x86_64/vmlinuz-linux-latest ${work_dir}/efiboot/EFI/archiso/vmlinuz-linux-latest.efi
     cp ${work_dir}/iso/${install_dir}/boot/x86_64/initramfs-linux.img ${work_dir}/efiboot/EFI/archiso/initramfs-linux.img
+    cp ${work_dir}/iso/${install_dir}/boot/x86_64/initramfs-linux-latest.img ${work_dir}/efiboot/EFI/archiso/initramfs-linux-latest.img
+    cp ${work_dir}/iso/${install_dir}/boot/x86_64/initramfs-linux-nouveau.img ${work_dir}/efiboot/EFI/archiso/initramfs-linux-nouveau.img
 
     mkdir -p ${work_dir}/efiboot/EFI/boot
     cp ${work_dir}/x86_64/airootfs/usr/lib/prebootloader/PreLoader.efi ${work_dir}/efiboot/EFI/boot/bootx64.efi
@@ -209,7 +218,13 @@ make_efiboot() {
 
     sed "s|%ARCHISO_LABEL%|${iso_label}|g;
          s|%INSTALL_DIR%|${install_dir}|g" \
-        ${script_path}/efiboot/loader/entries/archiso-x86_64-cd.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64.conf
+        ${script_path}/efiboot/loader/entries/archiso-x86_64-lts-cd.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-lts.conf
+    sed "s|%ARCHISO_LABEL%|${iso_label}|g;
+         s|%INSTALL_DIR%|${install_dir}|g" \
+        ${script_path}/efiboot/loader/entries/archiso-x86_64-latest-cd.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-latest.conf
+    sed "s|%ARCHISO_LABEL%|${iso_label}|g;
+         s|%INSTALL_DIR%|${install_dir}|g" \
+        ${script_path}/efiboot/loader/entries/archiso-x86_64-nouveau-cd.conf > ${work_dir}/efiboot/loader/entries/archiso-x86_64-nouveau.conf
 
     cp ${work_dir}/iso/EFI/shellx64_v2.efi ${work_dir}/efiboot/EFI/
     cp ${work_dir}/iso/EFI/shellx64_v1.efi ${work_dir}/efiboot/EFI/
