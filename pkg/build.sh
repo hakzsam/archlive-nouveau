@@ -11,7 +11,8 @@ pkgs=('libpciaccess-git'
       'xf86-video-nouveau-git'
       'mesa-git'
       'envytools-git'
-      'valgrind-mmt-git')
+      'valgrind-mmt-git'
+      'piglit-git')
 
 asroot=""
 if [ ${EUID} -eq 0 ]; then

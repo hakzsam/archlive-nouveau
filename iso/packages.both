@@ -51,6 +51,7 @@ openvpn
 partclone
 parted
 partimage
+piglit-git
 ppp
 pptpclient
 rfkill

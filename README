@@ -14,6 +14,7 @@ libpciaccess-git
 mesa-dri-git
 mesa-git
 mesa-libgl-git
+piglit-git
 valgrind-mmt-git
 xf86-video-ati-git
 xf86-video-intel-git
