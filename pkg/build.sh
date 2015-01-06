@@ -12,6 +12,7 @@ pkgs=('libpciaccess-git'
       'mesa-git'
       'envytools-git'
       'valgrind-mmt-git'
+      'waffle'
       'piglit-git')
 
 asroot=""

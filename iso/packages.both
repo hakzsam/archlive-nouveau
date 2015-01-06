@@ -66,6 +66,7 @@ usb_modeswitch
 valgrind-mmt-git
 vim
 vpnc
+waffle
 wget
 wireless_tools
 wpa_actiond
