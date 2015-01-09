@@ -40,7 +40,8 @@ build() {
   cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
            -DCMAKE_SKIP_RPATH=true \
            -DPIGLIT_BUILD_GLES1_TESTS=true \
-           -DPIGLIT_BUILD_GLES2_TESTS=true
+           -DPIGLIT_BUILD_GLES2_TESTS=true \
+           -DPIGLIT_BUILD_GLES3_TESTS=true
   make
 }
 
