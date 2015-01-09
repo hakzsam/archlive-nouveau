@@ -48,7 +48,7 @@ package() {
   cd $_gitname/build
   make DESTDIR="$pkgdir" install
 
-  for sofile in "$pkgdir"/usr/lib/piglit/lib/*.so; do
+  for sofile in "$pkgdir"/usr/lib/piglit/lib/*.so*; do
     sofile=$(basename $sofile)
     ln -s piglit/lib/$sofile "$pkgdir"/usr/lib/$sofile
   done
