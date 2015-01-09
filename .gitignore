@@ -1,0 +1,7 @@
+*.log
+*.tar.xz
+extra-i686/
+iso/out
+pkg/*/
+repo/*/
+src/*/
