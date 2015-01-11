@@ -12,6 +12,7 @@ dnsmasq
 dnsutils
 dosfstools
 elinks
+emacs
 envytools-git
 ethtool
 f2fs-tools
@@ -39,6 +40,7 @@ mesa-git
 mesa-libgl-git
 mc
 mtools
+nano
 nfs-utils
 nilfs-utils
 nmap
