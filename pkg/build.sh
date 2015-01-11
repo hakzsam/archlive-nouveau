@@ -22,18 +22,23 @@ fi
 
 for arch in "${archs[@]}"
 do
-	if [ ${arch} == x86_64 ]; then
-		cmd="makepkg ${asroot} -f"
-	elif [ ${arch} == i686 ]; then
+	if [ "${arch}" == 'x86_64' ]; then
+		cmd="makepkg ${asroot}"
+	elif [ "${arch}" == 'i686' ]; then
 		cmd="extra-i686-build -r ${i686chroot}"
 	fi
 
 	for pkg in "${pkgs[@]}"
 	do
-		cd $pkg && ${cmd} && cd ..
-		if [ $? -ne 0 ]; then
+		cd $pkg
+		FILES="`find ./ -name "*-${arch}.pkg.tar.xz"`"
+		${cmd}
+		if [ $? -eq 0 ]; then
+			rm -f ${FILES}
+		elif [ $? -ne 1 ]; then
 			echo "Failed to build '$pkg' for '$arch'!"
 			exit 1
 		fi
+		cd ..
 	done
 done
