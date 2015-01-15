@@ -83,6 +83,7 @@ xf86-video-nouveau-git
 xl2tpd
 xorg-server
 xorg-xinit
+xorg-xrandr
 xterm
 zd1211-firmware
 zsh
