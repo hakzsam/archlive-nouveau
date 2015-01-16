@@ -34,13 +34,19 @@ fi
 
 # Build Nouveau DRM kernel module.
 if [ -d ${nouveau_dir} ]; then
-    rm -rf ${nouveau_dir}
-fi
-
-git clone ${nouveau_git} ${nouveau_dir} --depth 1
-if [ $? -ne 0 ]; then
-    echo "Failed to clone 'nouveau' repository!"
-    exit 1
+    cd ${nouveau_dir}
+    git fetch origin && git rebase origin/master
+    if [ $? -ne 0 ]; then
+        echo "Failed to update 'nouveau' repository!"
+        exit 1
+    fi
+    cd ../
+else
+    git clone ${nouveau_git} ${nouveau_dir} --depth 1
+    if [ $? -ne 0 ]; then
+        echo "Failed to clone 'nouveau' repository!"
+        exit 1
+    fi
 fi
 
 linux_version=$(cat ${linux_dir}/include/config/kernel.release)
