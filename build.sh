@@ -6,6 +6,8 @@ archs=('x86_64')
 cd repo && ./clean.sh && cd ..
 cd iso && ./clean.sh && cd ..
 
+pacman -Sc
+
 
 # Build custom packages.
 cd pkg && ./build.sh ${archs} && cd -
