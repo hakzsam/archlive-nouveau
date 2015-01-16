@@ -2,6 +2,7 @@
 *.tar.xz
 extra-i686/
 iso/out
+iso/work
 pkg/*/
 repo/*/
 src/*/
