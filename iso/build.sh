@@ -80,7 +80,7 @@ make_setup_mkinitcpio_custom()  {
     setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'mkinitcpio -c /etc/mkinitcpio-archiso.conf -k /boot/vmlinuz-linux-latest -g /boot/initramfs-linux-latest.img' run
 
     # Nouveau latest kernel tree.
-    cp ${verbose} ${src_dir}/nouveau/drm/nouveau.ko ${work_dir}/${arch}/airootfs/lib/modules/${linux_version}/kernel/drivers/gpu/drm/nouveau/nouveau_latest.ko
+    cp ${verbose} ${src_dir}/nouveau/drm/nouveau/nouveau.ko ${work_dir}/${arch}/airootfs/lib/modules/${linux_version}/kernel/drivers/gpu/drm/nouveau/nouveau_latest.ko
     cp ${script_path}/mkinitcpio-nouveau.conf ${work_dir}/${arch}/airootfs/etc/mkinitcpio-nouveau.conf
     echo "#!/bin/bash" > ${work_dir}/${arch}/airootfs/root/depmod.sh
     echo "depmod ${linux_version}" >> ${work_dir}/${arch}/airootfs/root/depmod.sh

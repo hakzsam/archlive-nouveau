@@ -53,7 +53,7 @@ linux_version=$(cat ${linux_dir}/include/config/kernel.release)
 linuxdir=$(echo "$PWD/lib/modules/${linux_version}/source")
 
 cd ${nouveau_dir}
-./autogen.sh && make && cd drm && make LINUXDIR=${linuxdir} && cd -
+make && cd drm && make LINUXDIR=${linuxdir} && cd -
 if [ $? -ne 0 ]; then
     echo "Failed to build 'nouveau'!"
     exit 1
