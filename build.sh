@@ -24,9 +24,6 @@ cd ..
 cd iso && su -c './clean.sh'
 cd ..
 
-su -c 'pacman -Sc'
-
-
 # Build custom packages.
 cd pkg && su ${USER} -c "./build.sh ${archs}"
 if [ $? -ne 0 ]; then
