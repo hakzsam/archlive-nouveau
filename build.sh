@@ -17,7 +17,7 @@ fi
 
 
 # Clean local repository
-cd repo && su ${USER} -c './clean.sh'
+cd repo && su ${user} -c './clean.sh'
 cd ..
 
 # Clean image folder
@@ -25,7 +25,7 @@ cd iso && su -c './clean.sh'
 cd ..
 
 # Build custom packages.
-cd pkg && su ${USER} -c "./build.sh ${archs}"
+cd pkg && su ${user} -c "./build.sh ${archs}"
 if [ $? -ne 0 ]; then
 	echo "Failed to build custom packages!"
 	exit 1
@@ -33,7 +33,7 @@ fi
 cd ..
 
 # Build the custom local repository.
-cd repo && su ${USER} -c "./build.sh ${archs}"
+cd repo && su ${user} -c "./build.sh ${archs}"
 if [ $? -ne 0 ]; then
 	echo "Failed to build the custom local repository!"
 	exit 1
@@ -41,7 +41,7 @@ fi
 cd ..
 
 # Build the latest Linux kernel and Nouveau DRM.
-cd src && su ${USER} -c "./build.sh"
+cd src && su ${user} -c "./build.sh"
 if [ $? -ne 0 ]; then
 	echo "Failed to build the latest Linux kernel or Nouveau DRM!"
 	exit 1
