@@ -11,10 +11,8 @@ conflicts=(valgrind)
 replaces=(valgrind)
 depends=('glibc>=2.20' 'glibc<2.22' 'perl')
 options=('!emptydirs')
-source=('git+https://github.com/envytools/valgrind.git'
-        'valgrind-glibc-2.21.patch')
-sha256sums=('SKIP'
-            '4db0c4219b0209a371b4b4cbcf0c7f11ca72cdbf9af4eb59df219331026b24d8')
+source=('git+https://github.com/envytools/valgrind.git#branch=mmt-3.10')
+sha256sums=('SKIP')
 
 prepare() {
   if [ -d "$srcdir"/valgrind/VEX ]; then
@@ -24,9 +22,6 @@ prepare() {
   cd "$srcdir"/valgrind/VEX
   git checkout -f VEX_3_10_BRANCH
   cd ..
-  git checkout -f mmt-3.10
-
-  patch -p1 -i "$srcdir"/valgrind-glibc-2.21.patch
 }
 
 build() {
@@ -43,5 +38,5 @@ package() {
 
 pkgver() {
   cd "$srcdir"/valgrind
-  echo $(git rev-list --count master).$(git rev-parse --short master)
+  echo $(git rev-list --count mmt-3.10).$(git rev-parse --short mmt-3.10)
 }
