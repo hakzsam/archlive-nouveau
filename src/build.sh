@@ -24,7 +24,10 @@ fi
 should_compile=`echo "${res}" | grep "Already up-to-date"`
 if [[ -z "${should_compile}" ]]; then
     cd ${linux_dir}
-    zcat /proc/config.gz > .config && make olddefconfig
+    if [[ ! -f '.config' ]]; then
+        zcat /proc/config.gz > .config
+    fi
+    make olddefconfig
     if [ $? -ne 0 ]; then
         echo "Failed to build old default config!"
         exit 1
