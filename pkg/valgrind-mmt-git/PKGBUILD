@@ -9,7 +9,7 @@ url="https://github.com/envytools/valgrind.git"
 license=('GPL')
 conflicts=(valgrind)
 replaces=(valgrind)
-depends=('glibc>=2.20' 'glibc<2.22' 'perl')
+depends=('glibc>=2.20' 'glibc<2.23' 'perl')
 options=('!emptydirs')
 source=('git+https://github.com/envytools/valgrind.git#branch=mmt-3.10')
 sha256sums=('SKIP')
