@@ -48,8 +48,12 @@ if [ -d ${nouveau_dir} ]; then
     git fetch origin
     res=`git rebase origin/master`
     if [ $? -ne 0 ]; then
-        echo "Failed to update 'nouveau' repository!"
-        exit 1
+        git rebase --abort
+        git checkout -b tmp
+        git branch -D master
+        git branch master origin/master
+        git checkout master
+        git branch -D tmp
     fi
     cd ../
 else
