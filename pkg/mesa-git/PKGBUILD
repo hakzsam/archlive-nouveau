@@ -61,7 +61,7 @@ build () {
                --enable-xvmc \
                --enable-dri3 \
                --enable-omx \
-               --with-clang-libdir=/usr/lib
+               --with-llvm-prefix=/usr/lib
 
   make
 
