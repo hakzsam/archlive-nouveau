@@ -74,7 +74,7 @@ if [[ -z "${should_compile}" ]]; then
     if [ $? -ne 0 ]; then
         echo "Failed to build 'nouveau'!"
         exit 1
+    fi
 else
     echo "Nouveau: No new commits, skipping building!"
-    fi
 fi
