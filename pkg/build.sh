@@ -26,6 +26,9 @@ do
 		cmd="makepkg ${asroot}"
 	elif [ "${arch}" == 'i686' ]; then
 		cmd="extra-i686-build -r ${i686chroot}"
+	else
+		echo "Invalid architecture '$arch'!"
+		exit 1
 	fi
 
 	for pkg in "${pkgs[@]}"
