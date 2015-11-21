@@ -34,11 +34,12 @@ irssi
 lftp
 libdrm-git
 libpciaccess-git
+libva-mesa-driver-git
 linux-atm
 mesa-demos
-mesa-dri-git
 mesa-git
 mesa-libgl-git
+mesa-vdpau-git
 mc
 mtools
 nano
@@ -49,6 +50,7 @@ ntfs-3g
 ntp
 obconf
 openbox
+opencl-mesa-git
 openconnect
 openssh
 openvpn
@@ -82,6 +84,7 @@ xf86-input-synaptics
 xf86-video-ati-git
 xf86-video-intel-git
 xf86-video-nouveau-git
+xf86-video-vesa
 xl2tpd
 xorg-server
 xorg-xinit
