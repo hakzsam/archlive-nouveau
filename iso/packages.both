@@ -69,6 +69,7 @@ testdisk
 usb_modeswitch
 valgrind-mmt-git
 vim
+virtualgl
 vpnc
 waffle
 wget
