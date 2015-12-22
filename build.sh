@@ -24,6 +24,10 @@ cd ..
 cd iso && su -c './clean.sh'
 cd ..
 
+# Clean packages folder
+cd pkg && su ${user} -c './clean.sh'
+cd ..
+
 # Build custom packages.
 cd pkg && su ${user} -c "./build.sh ${archs}"
 if [ $? -ne 0 ]; then
