@@ -14,7 +14,7 @@ arch=("i686" "x86_64")
 url="http://intellinuxgraphics.org/"
 license=("custom")
 depends=("intel-dri" "libxvmc" "libpciaccess" "libdrm" "dri2proto" "xcb-util" "libxfixes" "udev")
-makedepends=("git" "xorg-server-devel" "X-ABI-VIDEODRV_VERSION=19" "libx11"
+makedepends=("git" "xorg-server-devel" "X-ABI-VIDEODRV_VERSION=20" "libx11"
              "xf86driproto" "glproto" "resourceproto" "scrnsaverproto" "mesa" "libxrender")
 provides=("xf86-video-intel")
 conflicts=("xf86-video-intel")
