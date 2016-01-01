@@ -36,7 +36,7 @@ build() {
 		--enable-radeon \
 		--enable-nouveau \
 		--enable-vmwgfx
-  make V=1
+  make
 }
 
 check() {
