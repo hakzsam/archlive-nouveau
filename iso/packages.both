@@ -36,6 +36,7 @@ libdrm-git
 libpciaccess-git
 libva-mesa-driver-git
 linux-atm
+linux-headers-git
 mesa-demos
 mesa-git
 mesa-libgl-git

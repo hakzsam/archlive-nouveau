@@ -12,6 +12,7 @@ pkgs=('libpciaccess-git'
       'mesa-git'
       'envytools-git'
       'valgrind-mmt-git'
+      'linux-headers-git'
       'waffle'
       'piglit-git')
 
