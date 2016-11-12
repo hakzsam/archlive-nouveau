@@ -9,25 +9,21 @@ url="https://github.com/envytools/valgrind.git"
 license=('GPL')
 conflicts=(valgrind)
 replaces=(valgrind)
-depends=('glibc>=2.20' 'glibc<2.23' 'perl')
-options=('!emptydirs')
-source=('git+https://github.com/envytools/valgrind.git#branch=mmt-3.10')
+depends=('glibc>=2.20' 'glibc<2.25' 'perl')
+options=('!emptydirs' '!buildflags')
+source=('git+https://github.com/envytools/valgrind.git#branch=mmt-3.11')
 sha256sums=('SKIP')
 
 prepare() {
   if [ -d "$srcdir"/valgrind/VEX ]; then
     rm -rf "$srcdir"/valgrind/VEX
   fi
-  git clone https://github.com/envytools/VEX.git "$srcdir"/valgrind/VEX
-  cd "$srcdir"/valgrind/VEX
-  git checkout -f VEX_3_10_BRANCH
-  cd ..
+  git clone -b VEX_3_11_BRANCH https://github.com/envytools/VEX.git "$srcdir"/valgrind/VEX
 }
 
 build() {
   cd "$srcdir"/valgrind
-  autoreconf -fi
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr --mandir=/usr/share/man
   make
 }
 
@@ -38,5 +34,5 @@ package() {
 
 pkgver() {
   cd "$srcdir"/valgrind
-  echo $(git rev-list --count mmt-3.10).$(git rev-parse --short mmt-3.10)
+  echo $(git rev-list --count mmt-3.11).$(git rev-parse --short mmt-3.11)
 }
