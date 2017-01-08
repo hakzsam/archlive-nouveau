@@ -17,18 +17,22 @@ fi
 
 
 # Clean local repository
+echo "Cleaning local repository (as \"${user}\")"
 cd repo && su ${user} -c './clean.sh'
 cd ..
 
 # Clean image folder
+echo "Cleaning the image folder (as \"root\")"
 cd iso && su -c './clean.sh'
 cd ..
 
 # Clean packages folder
+echo "Cleaning packages folder (as \"${user}\")"
 cd pkg && su ${user} -c './clean.sh'
 cd ..
 
 # Build custom packages.
+echo "Building custom packages (as \"${user}\")"
 cd pkg && su ${user} -c "./build.sh ${archs}"
 if [ $? -ne 0 ]; then
 	echo "Failed to build custom packages!"
@@ -37,6 +41,7 @@ fi
 cd ..
 
 # Build the custom local repository.
+echo "Building the local repository (as \"${user}\")"
 cd repo && su ${user} -c "./build.sh ${archs}"
 if [ $? -ne 0 ]; then
 	echo "Failed to build the custom local repository!"
@@ -45,6 +50,7 @@ fi
 cd ..
 
 # Build the latest Linux kernel and Nouveau DRM.
+echo "Building Linux and Nouveau (as \"${user}\")"
 cd src && su ${user} -c "./build.sh"
 if [ $? -ne 0 ]; then
 	echo "Failed to build the latest Linux kernel or Nouveau DRM!"
@@ -53,6 +59,7 @@ fi
 cd ..
 
 # Build the image.
+echo "Building the image (as \"root\")"
 cd iso && su -c "./build.sh -v ${archs}"
 if [ $? -ne 0 ]; then
 	echo "Failed to build the image!"
