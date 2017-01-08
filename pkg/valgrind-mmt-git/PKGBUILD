@@ -1,8 +1,8 @@
 # Maintainer: Tim Jester-Pfadt <t.jp(at)gmx.de>
 
 pkgname=valgrind-mmt-git
-pkgver=11136.00d7f7a
-pkgrel=3
+pkgver=12221.10cfc45b2
+pkgrel=1
 pkgdesc="Valgrind with mmt tool to trace application accesses to mmaped memory"
 arch=('i686' 'x86_64')
 url="https://github.com/envytools/valgrind.git"
@@ -23,6 +23,7 @@ prepare() {
 
 build() {
   cd "$srcdir"/valgrind
+  autoreconf -fi
   ./configure --prefix=/usr --mandir=/usr/share/man
   make
 }
