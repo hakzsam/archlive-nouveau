@@ -8,9 +8,6 @@ provides=('linux-headers-git')
 license=('GPL2')
 options=('!strip')
 
-source=("file://../../../src/linux")
-md5sums=('SKIP')
-
 pkgver() {
   cd "${srcdir}/../../../src/linux"
   cat include/config/kernel.release | sed -e 's/\-/./g;s/+//g'
