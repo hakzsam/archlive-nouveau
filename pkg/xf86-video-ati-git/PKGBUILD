@@ -13,8 +13,8 @@ arch=('i686' 'x86_64')
 url="http://xorg.freedesktop.org/"
 provides=("${_realpkgname}")
 depends=('libdrm>=2.4.41' 'systemd' 'mesa')
-makedepends=('xorg-server-devel' 'X-ABI-VIDEODRV_VERSION=20')
-conflicts=('xorg-server<1.18.0' 'X-ABI-VIDEODRV_VERSION<20' 'X-ABI-VIDEODRV_VERSION>=21')
+makedepends=('xorg-server-devel' 'X-ABI-VIDEODRV_VERSION=23')
+conflicts=('xorg-server<1.18.0' 'xf86-video-ati')
 license=('custom')
 install=xf86-video-ati-git.install
 
