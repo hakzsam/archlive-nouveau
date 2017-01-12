@@ -36,6 +36,7 @@ build() {
 		--enable-radeon \
 		--enable-nouveau \
 		--enable-vmwgfx
+  sed -i 's/^TESTS/#&/' tests/nouveau/Makefile.in
   make
 }
 
