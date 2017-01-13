@@ -46,7 +46,7 @@ else
 fi
 
 cd "${linux_dir}" && old_commit=`git show --no-patch --format="%H"` && cd "${dir}"
-cd "${nouveau_dir}" && commit=`git log --oneline --grep="drm-next" | sed -e 's/^[a-z0-9]\{7\} drm-next //' | head -1` && cd "${dir}"
+cd "${nouveau_dir}" && commit=`git log --oneline --grep="drm-next" | sed -e 's/^[a-z0-9]\{8\} drm-next //' | head -1` && cd "${dir}"
 
 echo "\"${old_commit}\""
 echo "\"${commit}\""
