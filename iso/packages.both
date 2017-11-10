@@ -33,13 +33,13 @@ ipw2200-fw
 irssi
 lftp
 libdrm-git
+libglvnd
 libpciaccess-git
 libva-mesa-driver-git
 linux-atm
 linux-headers-git
 mesa-demos
 mesa-git
-mesa-libgl-git
 mesa-vdpau-git
 mc
 mtools
@@ -62,7 +62,6 @@ piglit-git
 ppp
 pptpclient
 refind-efi
-rfkill
 rp-pppoe
 rsync
 smartmontools
@@ -71,10 +70,13 @@ sudo
 tcpdump
 testdisk
 usb_modeswitch
+util-linux
 valgrind-mmt-git
 vim
 virtualgl
 vpnc
+vulkan-intel-git
+vulkan-radeon-git
 waffle
 wget
 wireless_tools
