@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 set -e -u
 
 iso_name=archlinux
@@ -9,6 +8,7 @@ iso_version=$(date +%Y.%m.%d)
 install_dir=arch
 work_dir=work
 out_dir=out
+gpg_key=
 
 arch=$(uname -m)
 verbose=""
@@ -20,8 +20,6 @@ repo_dir=$(pwd | sed "s|iso|repo|g")
 src_dir=../src
 linux_dir=${src_dir}/linux
 linux_version=$(cat ${linux_dir}/include/config/kernel.release)
-
-archs=${2}
 
 _usage ()
 {
@@ -72,6 +70,11 @@ make_packages() {
     setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -p "$(grep -h -v ^# ${script_path}/packages.{both,${arch}})" install
 }
 
+# Needed packages for x86_64 EFI boot
+make_packages_efi() {
+    setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${work_dir}/pacman.conf" -D "${install_dir}" -p "efitools" install
+}
+
 # Copy mkinitcpio custom archiso hooks and build initramfs (airootfs)
 make_setup_mkinitcpio_custom()  {
     # Linux latest kernel tree.
@@ -84,9 +87,17 @@ make_setup_mkinitcpio_custom()  {
     cp ${script_path}/mkinitcpio-nouveau.conf ${work_dir}/${arch}/airootfs/etc/mkinitcpio-nouveau.conf
     echo "#!/bin/bash" > ${work_dir}/${arch}/airootfs/root/depmod.sh
     echo "depmod ${linux_version}" >> ${work_dir}/${arch}/airootfs/root/depmod.sh
-    setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'sh /root/depmod.sh' run
+    gnupg_fd=
+    if [[ ${gpg_key} ]]; then
+      gpg --export ${gpg_key} >${work_dir}/gpgkey
+      exec 17<>${work_dir}/gpgkey
+    fi
+    ARCHISO_GNUPG_FD=${gpg_key:+17} setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'sh /root/depmod.sh' run
     rm ${work_dir}/${arch}/airootfs/root/depmod.sh
-    setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'mkinitcpio -c /etc/mkinitcpio-nouveau.conf -k /boot/vmlinuz-linux-latest -g /boot/initramfs-linux-nouveau.img' run
+    ARCHISO_GNUPG_FD=${gpg_key:+17} setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'mkinitcpio -c /etc/mkinitcpio-nouveau.conf -k /boot/vmlinuz-linux-latest -g /boot/initramfs-linux-nouveau.img' run
+    if [[ ${gpg_key} ]]; then
+      exec 17<&-
+    fi
 }
 
 # Copy mkinitcpio archiso hooks and build initramfs (airootfs)
@@ -102,7 +113,15 @@ make_setup_mkinitcpio() {
     cp /usr/lib/initcpio/install/archiso_kms ${work_dir}/${arch}/airootfs/etc/initcpio/install
     cp /usr/lib/initcpio/archiso_shutdown ${work_dir}/${arch}/airootfs/etc/initcpio
     cp ${script_path}/mkinitcpio.conf ${work_dir}/${arch}/airootfs/etc/mkinitcpio-archiso.conf
-    setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'mkinitcpio -c /etc/mkinitcpio-archiso.conf -k /boot/vmlinuz-linux -g /boot/initramfs-linux.img' run
+    gnupg_fd=
+    if [[ ${gpg_key} ]]; then
+      gpg --export ${gpg_key} >${work_dir}/gpgkey
+      exec 17<>${work_dir}/gpgkey
+    fi
+    ARCHISO_GNUPG_FD=${gpg_key:+17} setarch ${arch} mkarchiso ${verbose} -w "${work_dir}/${arch}" -C "${pacman_conf}" -D "${install_dir}" -r 'mkinitcpio -c /etc/mkinitcpio-archiso.conf -k /boot/vmlinuz-linux -g /boot/initramfs-linux.img' run
+    if [[ ${gpg_key} ]]; then
+      exec 17<&-
+    fi
 }
 
 # Customize installation (airootfs)
@@ -195,7 +214,7 @@ make_efi() {
 # Prepare efiboot.img::/EFI for "El Torito" EFI boot mode
 make_efiboot() {
     mkdir -p ${work_dir}/iso/EFI/archiso
-    truncate -s 93M ${work_dir}/iso/EFI/archiso/efiboot.img
+    truncate -s 512M ${work_dir}/iso/EFI/archiso/efiboot.img
     mkfs.vfat -n ARCHISO_EFI ${work_dir}/iso/EFI/archiso/efiboot.img
 
     mkdir -p ${work_dir}/efiboot
@@ -241,7 +260,7 @@ make_prepare() {
     setarch ${arch} mkarchiso ${verbose} -w "${work_dir}" -D "${install_dir}" pkglist
     setarch ${arch} mkarchiso ${verbose} -w "${work_dir}" -D "${install_dir}" prepare
     rm -rf ${work_dir}/airootfs
-    # rm -rf ${work_dir}/${arch}/airootfs (if low space, this helps)
+    rm -rf ${work_dir}/${arch}/airootfs # (if low space, this helps)
 }
 
 # Build ISO
@@ -281,15 +300,20 @@ mkdir -p ${work_dir}
 run_once make_pacman_conf
 
 # Do all stuff for each airootfs
-for arch in "${archs[@]}"; do
+for arch in x86_64; do
     run_once make_basefs
     run_once make_packages
+done
+
+run_once make_packages_efi
+
+for arch in x86_64; do
     run_once make_setup_mkinitcpio
     run_once make_setup_mkinitcpio_custom
     run_once make_customize_airootfs
 done
 
-for arch in "${archs[@]}"; do
+for arch in x86_64; do
     run_once make_boot
     run_once make_boot_custom
 done
@@ -301,7 +325,7 @@ run_once make_isolinux
 run_once make_efi
 run_once make_efiboot
 
-for arch in "${archs[@]}"; do
+for arch in x86_64; do
     run_once make_prepare
 done
 
