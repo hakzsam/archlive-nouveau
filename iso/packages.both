@@ -1,6 +1,7 @@
 arch-install-scripts
 b43-fwcutter
 btrfs-progs
+clang-svn
 clonezilla
 crda
 darkhttpd
@@ -38,6 +39,7 @@ libpciaccess-git
 libva-mesa-driver-git
 linux-atm
 linux-headers-git
+llvm-svn
 mesa-demos
 mesa-git
 mesa-vdpau-git
