@@ -1,7 +1,5 @@
 #!/bin/bash
 
-archs=('x86_64')
-
 user="${1}"
 if [[ -z ${user} ]]; then
     user=${USER}
@@ -16,6 +14,11 @@ give a normal username as first argument."
 fi
 
 
+# Clean packages folder
+echo "Cleaning packages folder (as \"${user}\")"
+cd pkg && su ${user} -c './clean.sh'
+cd ..
+
 # Clean local repository
 echo "Cleaning local repository (as \"${user}\")"
 cd repo && su ${user} -c './clean.sh'
@@ -26,14 +29,9 @@ echo "Cleaning the image folder (as \"root\")"
 cd iso && su -c './clean.sh'
 cd ..
 
-# Clean packages folder
-echo "Cleaning packages folder (as \"${user}\")"
-cd pkg && su ${user} -c './clean.sh'
-cd ..
-
 # Build custom packages.
 echo "Building custom packages (as \"${user}\")"
-cd pkg && su ${user} -c "./build.sh ${archs}"
+cd pkg && su ${user} -c "./build.sh"
 if [ $? -ne 0 ]; then
 	echo "Failed to build custom packages!"
 	exit 1
@@ -42,7 +40,7 @@ cd ..
 
 # Build the custom local repository.
 echo "Building the local repository (as \"${user}\")"
-cd repo && su ${user} -c "./build.sh ${archs}"
+cd repo && su ${user} -c "./build.sh"
 if [ $? -ne 0 ]; then
 	echo "Failed to build the custom local repository!"
 	exit 1
@@ -60,7 +58,7 @@ cd ..
 
 # Build the image.
 echo "Building the image (as \"root\")"
-cd iso && su -c "./build.sh -v ${archs}"
+cd iso && su -c "./build.sh -v"
 if [ $? -ne 0 ]; then
 	echo "Failed to build the image!"
 	exit 1

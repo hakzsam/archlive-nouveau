@@ -1,9 +1,5 @@
 #!/bin/bash
 
-archs=${1}
-
-i686chroot="$PWD/../"
-
 pkgs=('libpciaccess-git'
       'libdrm-git'
       'xf86-video-ati-git'
@@ -23,24 +19,16 @@ fi
 
 for arch in "${archs[@]}"
 do
-	if [ "${arch}" == 'x86_64' ]; then
-		cmd="makepkg ${asroot}"
-	elif [ "${arch}" == 'i686' ]; then
-		cmd="extra-i686-build -r ${i686chroot}"
-	else
-		echo "Invalid architecture '$arch'!"
-		exit 1
-	fi
-
 	for pkg in "${pkgs[@]}"
 	do
 		cd $pkg
 		FILES="`find ./ -name "*-${arch}.pkg.tar.xz"`"
-		${cmd}
-		if [ $? -eq 0 ]; then
+		makepkg ${asroot}
+		result=$?
+		if [ ${result} -eq 0 ]; then
 			rm -f ${FILES}
-		elif [ $? -ne 1 ]; then
-			echo "Failed to build '$pkg' for '$arch'!"
+		elif [ ${result} -ne 1 ]; then
+			echo "Failed to build '$pkg'!"
 			exit 1
 		fi
 		cd ..
