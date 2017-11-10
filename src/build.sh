@@ -21,6 +21,7 @@ if [ ! -d ${linux_dir} ]; then
         echo "Failed to update 'linux' repository!"
         exit 1
     fi
+    git remote add torvalds git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 fi
 
 # Build Nouveau DRM kernel module.
@@ -45,20 +46,41 @@ else
     fi
 fi
 
+pushd "${linux_dir}"
+git fetch origin
+if [ $? -ne 0 ]; then
+    echo "Failed to update 'linux' repository!"
+    popd
+    exit 1
+fi
+git fetch torvalds
+if [ $? -ne 0 ]; then
+    echo "Failed to update 'linux' repository!"
+    popd
+    exit 1
+fi
+popd
+
 cd "${linux_dir}" && old_commit=`git show --no-patch --format="%H"` && cd "${dir}"
-cd "${nouveau_dir}" && commit=`git log --oneline --grep="drm-next" | sed -e 's/^[a-z0-9]\{8\} drm-next //' | head -1` && cd "${dir}"
+pushd "${nouveau_dir}"
+    commit_or_tag=`git log --oneline --grep="^v[0-9]\.[0-9][0-9]\?\(\-rc\d\)\?" --grep="^drm-next [0-9a-f]\{40\}" -n1 | sed -e 's/^[a-z0-9]\{8\} //'`
+    echo "${commit_or_tag}"
+    if [[ $(echo ${commit_or_tag} | grep "^drm-next") ]]; then
+        commit=$(echo ${commit_or_tag} | sed -e 's/^drm-next //')
+        echo "${commit}"
+    else
+        pushd ${linux_dir}
+        commit=$(git show ${commit_or_tag} --no-patch --format="%H" | tail -1)
+        echo "${commit}"
+        popd
+    fi
+popd
 
 echo "\"${old_commit}\""
 echo "\"${commit}\""
 
 if [[ "${old_commit}" != "${commit}" || ! -z "${force_build}" ]]; then
-    cd "${linux_dir}"
-    git checkout drm-next
-    res_linux=`git pull origin ${linux_branch}`
-    if [ $? -ne 0 ]; then
-        echo "Failed to update 'linux' repository!"
-        exit 1
-    fi
+    cd ${linux_dir}
     git checkout ${commit}
 
     if [[ ! -f '.config' ]]; then
