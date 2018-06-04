@@ -1,6 +1,9 @@
 Customised live version of Arch Linux with pre-installed packages for Nouveau
 
-!!! Currently only work for x86_64 architectures !!!
+Prebuilt images are hosted on https://nouveau.pmoreau.org -- the build process
+for these is currently broken, so they are not being updated regularly.
+
+!!! Currently only works for x86_64 architectures !!!
 
 Pre-installed kernels:
 1) Nouveau (git://people.freedesktop.org/~darktama/nouveau)
